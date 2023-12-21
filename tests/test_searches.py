@@ -1,4 +1,4 @@
-from searches.linear import linear_search
+from searches import linear_search
 import pytest
 
 
