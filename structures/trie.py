@@ -1,5 +1,5 @@
 from typing import Dict, List
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class TrieNode:
@@ -40,6 +40,12 @@ class _Trie(ABC):
 
     def delete(self, word: str):
         self._delete(self.root, word, "")
+
+    @abstractmethod
+    def _delete(self, current: TrieNode, word: str, phrase: str):
+        """
+        Abstract method for deletion of a word from the root trie
+        """
 
     def __len__(self) -> int:
         """
