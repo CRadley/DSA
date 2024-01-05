@@ -30,29 +30,28 @@ class MinHeap:
             self._swap(index, parent_index)
             self._heapify_up(parent_index)
 
+    def _heapify_down(self, index: int):
+        left_index, right_index = determine_child_indices(index)
+        if self.length <= left_index:
+            return
+        if self.length > right_index:
+            min_child = min(self._heap[left_index], self._heap[right_index])
+            min_child_index = (
+                left_index if min_child == self._heap[left_index] else right_index
+            )
+        else:
+            min_child = self._heap[left_index]
+            min_child_index = left_index
+        self._swap(index, min_child_index)
+        self._heapify_down(min_child_index)
+
     def pop(self) -> int | None:
         if not self.length:
             return None
         self.length -= 1
         self._swap(0, self.length)
         value = self._heap.pop()
-        i = 0
-        l, r = determine_child_indices(i)
-        while True:
-            if self.length > r:
-                min_child = min(self._heap[l], self._heap[r])
-                min_child_index = l if min_child == self._heap[l] else r
-            elif self.length == r:
-                min_child = self._heap[l]
-                min_child_index = l
-            elif self.length <= l:
-                break
-            if min_child < self._heap[i]:
-                self._swap(i, min_child_index)
-                i = min_child_index
-                l, r = determine_child_indices(i)
-                continue
-            break
+        self._heapify_down(0)
         return value
 
     def peek(self) -> int | None:
