@@ -1,4 +1,5 @@
 from typing import Dict, List
+from abc import ABC
 
 
 class TrieNode:
@@ -8,22 +9,7 @@ class TrieNode:
         self.is_word = False
 
 
-class _SoftDelete:
-    def _delete(self, current: TrieNode, word: str, phrase: str):
-        if current.character:
-            phrase += current.character
-        if word == phrase:
-            current.is_word = False
-        for node in current.children.values():
-            self._delete(node, word, phrase)
-
-
-class _HardDelete:
-    def _delete(self, current: TrieNode, word: str, phrase: str) -> bool:
-        raise NotImplementedError("Hard delete not implemented yet")
-
-
-class _Trie:
+class _Trie(ABC):
     def __init__(self) -> None:
         self.root = TrieNode(None)
 
@@ -70,13 +56,24 @@ class _Trie:
         return length
 
 
-class TrieSoftDelete(_SoftDelete, _Trie):
+class TrieSoftDelete(_Trie):
     """
     Trie that implements a "soft" delete, where the nodes for deleted words are kept in memory.
     """
 
+    def _delete(self, current: TrieNode, word: str, phrase: str):
+        if current.character:
+            phrase += current.character
+        if word == phrase:
+            current.is_word = False
+        for node in current.children.values():
+            self._delete(node, word, phrase)
 
-class TrieHardDelete(_HardDelete, _Trie):
+
+class TrieHardDelete(_Trie):
     """
     Trie that implements a "hard" delete, where the nodes for deleted words are removed.
     """
+
+    def _delete(self, current: TrieNode, word: str, phrase: str) -> bool:
+        raise NotImplementedError("Hard delete not implemented yet")
