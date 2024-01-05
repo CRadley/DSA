@@ -19,11 +19,16 @@ class MinHeap:
         self._heap.append(value)
         if self.length == 1:
             return
-        i = self.length - 1
-        p = determine_parent_index(i)
-        while self._heap[i] < self._heap[p] and i > 0:
-            self._swap(i, p)
-            i = p
+        index = self.length - 1
+        self._heapify_up(index)
+
+    def _heapify_up(self, index: int):
+        if not index:
+            return
+        parent_index = determine_parent_index(index)
+        if self._heap[index] < self._heap[parent_index]:
+            self._swap(index, parent_index)
+            self._heapify_up(parent_index)
 
     def pop(self) -> int | None:
         if not self.length:
