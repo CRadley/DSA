@@ -50,3 +50,6 @@ class Queue:
         if self._head is not None:
             return self._head.value
         return None
+
+    def __bool__(self) -> bool:
+        return bool(self.length)
