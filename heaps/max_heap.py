@@ -40,7 +40,6 @@ class MaxHeap:
             self._heapify_down(max_child_index)
 
     def pop(self) -> int | None:
-        print("POP")
         if not self.length:
             return None
         self.length -= 1
