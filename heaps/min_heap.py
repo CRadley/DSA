@@ -35,8 +35,9 @@ class MinHeap:
         else:
             min_child = self._heap[left_index]
             min_child_index = left_index
-        self._swap(index, min_child_index)
-        self._heapify_down(min_child_index)
+        if min_child < self._heap[index]:
+            self._swap(index, min_child_index)
+            self._heapify_down(min_child_index)
 
     def pop(self) -> int | None:
         if not self.length:

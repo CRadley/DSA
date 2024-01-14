@@ -2,7 +2,7 @@ from typing import Any
 
 
 class HashMap:
-    def __init__(self, *, size: int):
+    def __init__(self, *, size: int = 10000):
         self.size = size
         self.buckets = [[] for _ in range(self.size)]
 
