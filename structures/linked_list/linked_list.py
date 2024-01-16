@@ -8,16 +8,30 @@ class LinkedList(Generic[T]):
     def __init__(self):
         self.length = 0
         self.head: Node[T] | None = None
-        self.tail: Node[T] | None = None
 
     def append(self, value: T):
+        """
+        Add a node at the end of the linked list
+        """
         node = Node[T](value)
         self.length += 1
         if not self.head:
             self.head = node
-        if self.tail:
-            self.tail.next = node
-        self.tail = node
+            return
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = node
+
+    def prepend(self, value: int):
+        """
+        Add a node at the start of the linked list
+        """
+        node = Node[T](value)
+        self.length += 1
+        if self.head:
+            node.next = self.head
+        self.head = node
 
     def get(self, index: int) -> T | None:
         if index >= self.length:
@@ -49,7 +63,6 @@ class LinkedList(Generic[T]):
         value = current.next.value
         if self.length == index:
             current.next = None
-            self.tail = current
         else:
             current.next = current.next.next
         return value
@@ -73,12 +86,3 @@ class LinkedList(Generic[T]):
         else:
             prev.next = current.next
         return value
-
-    def prepend(self, value: int):
-        node = Node[T](value)
-        self.length += 1
-        if not self.tail:
-            self.tail = node
-        if self.head:
-            node.next = self.head
-        self.head = node
