@@ -1,5 +1,5 @@
-from tree.binary_node import BinaryNode
-from tree.binary_traversal import (
+from tree.binary.binary_node import BinaryNode
+from tree.binary.binary_traversal import (
     pre_order,
     in_order,
     post_order,
@@ -8,6 +8,8 @@ from tree.binary_traversal import (
     compare_binary_trees,
     bst_insert,
     dfs_on_bst,
+    binary_search_tree,
+    bst_delete,
 )
 import pytest
 
@@ -100,3 +102,65 @@ def test_dfs_on_bst():
     assert dfs_on_bst(tree, 2)
     assert dfs_on_bst(tree, 3)
     assert not dfs_on_bst(tree, 4)
+
+
+def test_binary_search_tree():
+    tree = BinaryNode(2, BinaryNode(1, None, None), BinaryNode(3, None, None))
+    assert binary_search_tree(tree, 1)
+    assert binary_search_tree(tree, 2)
+    assert binary_search_tree(tree, 3)
+    assert not binary_search_tree(tree, 4)
+
+
+def test_delete_binary_tree_case_0():
+    """
+    Node being deleted has no children
+    """
+    root = BinaryNode(
+        7,
+        BinaryNode(3, BinaryNode(2, None, None), BinaryNode(4, None, None)),
+        BinaryNode(
+            23,
+            BinaryNode(18, BinaryNode(17, None, None), None),
+            BinaryNode(26, BinaryNode(24, None, None), BinaryNode(29, None, None)),
+        ),
+    )
+    expected = [2, 3, 7, 17, 18, 23, 24, 26, 29]
+    bst_delete(root, 4)
+    assert in_order(root) == expected
+
+
+def test_delete_binary_tree_case_1():
+    """
+    Node being deleted has 1 child
+    """
+    root = BinaryNode(
+        7,
+        BinaryNode(3, BinaryNode(2, None, None), BinaryNode(4, None, None)),
+        BinaryNode(
+            23,
+            BinaryNode(18, BinaryNode(17, None, None), None),
+            BinaryNode(26, BinaryNode(24, None, None), BinaryNode(29, None, None)),
+        ),
+    )
+    expected = [2, 3, 4, 7, 17, 23, 24, 26, 29]
+    bst_delete(root, 18)
+    assert in_order(root) == expected
+
+
+def test_delete_binary_tree_case_2():
+    """
+    Node being deleted has 2 children
+    """
+    root = BinaryNode(
+        7,
+        BinaryNode(3, BinaryNode(2, None, None), BinaryNode(4, None, None)),
+        BinaryNode(
+            23,
+            BinaryNode(18, BinaryNode(17, None, None), None),
+            BinaryNode(26, BinaryNode(24, None, None), BinaryNode(29, None, None)),
+        ),
+    )
+    expected = [2, 3, 4, 7, 17, 18, 24, 26, 29]
+    bst_delete(root, 23)
+    assert in_order(root) == expected

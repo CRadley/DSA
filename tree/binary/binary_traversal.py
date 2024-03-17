@@ -1,4 +1,4 @@
-from tree.binary_node import BinaryNode
+from tree.binary.binary_node import BinaryNode
 from typing import List
 from structures.queue import Queue
 
@@ -96,12 +96,52 @@ def bst_insert(node: BinaryNode, value: int):
             bst_insert(node.left, value)
 
 
-def bst_delete(node: BinaryNode, value: int):
+def find_smallest_value(node: BinaryNode) -> int:
+    current = node
+    while current.left is not None:
+        current = current.left
+    return current.value
+
+
+def bst_delete(node: BinaryNode, value: int) -> bool:
     """
     Case 0) 0 children - remove
     Case 1) 1 child - Set parent node to child
     Case 2) Find smallest on large side, Find largest on small side. This will then simplify to either Case 0 or 1
     """
+    if node.value == value:
+        return True
+
+    elif value < node.value and node.left is not None:
+        found = bst_delete(node.left, value)
+        if found:
+            if node.left.number_of_children == 0:
+                node.left = None
+            elif node.left.number_of_children == 1:
+                if node.left.left is not None:
+                    node.left = node.left.left
+                else:
+                    node.left = node.left.right
+            elif node.left.number_of_children == 2:
+                s = find_smallest_value(node.left.right)
+                node.left.value = s
+                bst_delete(node.left.right, s)
+
+    elif node.right is not None:
+        found = bst_delete(node.right, value)
+        if found:
+            if node.right.number_of_children == 0:
+                node.right = None
+            elif node.right.number_of_children == 1:
+                if node.right.left is not None:
+                    node.right = node.right.left
+                else:
+                    node.right = node.right.right
+            elif node.right.number_of_children == 2:
+                s = find_smallest_value(node.right.right)
+                node.right.value = s
+                bst_delete(node.right.right, s)
+    return False
 
 
 def dfs_on_bst(node: BinaryNode | None, value: int) -> bool:
@@ -112,3 +152,15 @@ def dfs_on_bst(node: BinaryNode | None, value: int) -> bool:
     if node.value < value:
         return dfs_on_bst(node.right, value)
     return dfs_on_bst(node.left, value)
+
+
+def binary_search_tree(root: BinaryNode, value: int) -> bool:
+    current = root
+    while current is not None:
+        if current.value == value:
+            return True
+        elif value < current.value:
+            current = current.left
+        else:
+            current = current.right
+    return False

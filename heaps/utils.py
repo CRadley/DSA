@@ -1,4 +1,4 @@
-def determine_child_indices(n: int) -> (int, int):
+def determine_child_indices(n: int) -> tuple[int, int]:
     return 2 * n + 1, 2 * n + 2
 
 

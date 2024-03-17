@@ -9,3 +9,7 @@ class BinaryNode:
 
     def __str__(self) -> str:
         return f"{self.value}"
+
+    @property
+    def number_of_children(self) -> int:
+        return bool(self.left) + bool(self.right)
