@@ -8,3 +8,7 @@ class Node:
         self.left: Self | None = None
         self.right: Self | None = None
         self.height: int = 1
+
+    @property
+    def number_of_children(self) -> int:
+        return (self.left is not None) + (self.right is not None)

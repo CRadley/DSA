@@ -93,7 +93,7 @@ class AVLTree:
             return True
         elif key < node.key and node.left is not None:
             if self._delete(node.left, key):
-                match self.number_of_children(node.left):
+                match node.left.number_of_children:
                     case 0:
                         node.left = None
                     case 1:
@@ -107,7 +107,7 @@ class AVLTree:
                         self._delete(node.left.right, s)
         elif key > node.key and node.right is not None:
             if self._delete(node.right, key):
-                match self.number_of_children(node.right):
+                match node.right.number_of_children:
                     case 0:
                         node.right = None
                     case 1:
@@ -120,9 +120,6 @@ class AVLTree:
                         node.right.value = s
                         self._delete(node.right.right, s)
         self.rotate([node])
-
-    def number_of_children(self, node: Node):
-        return (node.left is not None) + (node.right is not None)
 
     def find_smallest_value(self, node: Node) -> int:
         current = node
