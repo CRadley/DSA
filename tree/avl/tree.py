@@ -11,8 +11,7 @@ class AVLTree:
             self.root = Node(key, value)
             return
         self._insert(self.root, key, value)
-        
-    
+
     def _insert(self, current: Node, key: int, value: int):
         if key < current.key:
             if current.left is None:
@@ -80,7 +79,7 @@ class AVLTree:
                         else:
                             node.left = node.right.left
                     case 2:
-                        s = self.find_smallest_value(node.left.right)
+                        s = self._find_smallest_value(node.left.right)
                         node.left.value = s
                         self._delete(node.left.right, s)
         elif key > node.key and node.right is not None:
@@ -94,13 +93,12 @@ class AVLTree:
                         else:
                             node.right = node.right.right
                     case 2:
-                        s = self.find_smallest_value(node.right.right)
+                        s = self._find_smallest_value(node.right.right)
                         node.right.value = s
                         self._delete(node.right.right, s)
         self._rotate(node)
 
-    def find_smallest_value(self, node: Node) -> int:
-        current = node
-        while current.left is not None:
-            current = current.left
-        return current.value
+    def _find_smallest_value(self, node: Node) -> int:
+        if node.left is None:
+            return node.value
+        return self._find_smallest_value(node.left)
