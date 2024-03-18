@@ -7,8 +7,20 @@ class Node:
         self.value = value
         self.left: Self | None = None
         self.right: Self | None = None
-        self.height: int = 1
 
     @property
     def number_of_children(self) -> int:
         return (self.left is not None) + (self.right is not None)
+
+    @property
+    def height(self) -> None:
+        return 1 + max(
+            self.left.height if self.left else 0, self.right.height if self.right else 0
+        )
+
+    @property
+    def balance_factor(self) -> int:
+        return (self.left.height if self.left else 0) - (
+            self.right.height if self.right else 0
+        )
+    

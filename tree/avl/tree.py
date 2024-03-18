@@ -31,27 +31,15 @@ class AVLTree:
                 break
         self.rotate(stack)
 
-    def update_height(self, node: Node):
-        node.height = 1 + max(
-            node.left.height if node.left else 0, node.right.height if node.right else 0
-        )
-
-    def calculate_balance(self, node: Node) -> int:
-        return (node.left.height if node.left else 0) - (
-            node.right.height if node.right else 0
-        )
-
     def rotate(self, stack: List[Node]):
         for node in stack:
-            balance_factor = self.calculate_balance(node)
-            if -1 <= balance_factor <= 1:
-                self.update_height(node)
+            balance_factor = node.balance_factor
             if balance_factor == 2:
-                if self.calculate_balance(node.left) == -1:
+                if node.left.balance_factor == -1:
                     self._left_rotate(node.left)
                 self._right_rotate(node)
             elif balance_factor == -2:
-                if self.calculate_balance(node.right) == 1:
+                if node.right.balance_factor == 1:
                     self._right_rotate(node.right)
                 self._left_rotate(node)
 
@@ -60,16 +48,12 @@ class AVLTree:
         node.value = node.right.value
         node.key = node.right.key
         node.right = node.right.right
-        self.update_height(node.left)
-        self.update_height(node)
 
     def _right_rotate(self, node: Node):
         node.right = Node(node.key, node.value)
         node.value = node.left.value
         node.key = node.left.key
         node.left = node.left.left
-        self.update_height(node.right)
-        self.update_height(node)
 
     def pre_order_traversal(self) -> List[int]:
         keys = []
