@@ -10,38 +10,32 @@ class AVLTree:
         if self.root is None:
             self.root = Node(key, value)
             return
-        current = self.root
-        stack = []
-        while current:
-            stack.insert(0, current)
-            if key < current.key:
-                if current.left is None:
-                    current.left = Node(key, value)
-                    break
-                else:
-                    current = current.left
-            elif key > current.key:
-                if current.right is None:
-                    current.right = Node(key, value)
-                    break
-                else:
-                    current = current.right
+        self._insert(self.root, key, value)
+        
+    
+    def _insert(self, current: Node, key: int, value: int):
+        if key < current.key:
+            if current.left is None:
+                current.left = Node(key, value)
             else:
-                current.value = value
-                break
-        self.rotate(stack)
+                self._insert(current.left, key, value)
+        elif key > current.key:
+            if current.right is None:
+                current.right = Node(key, value)
+            else:
+                self._insert(current.right, key, value)
+        self._rotate(current)
 
-    def rotate(self, stack: List[Node]):
-        for node in stack:
-            balance_factor = node.balance_factor
-            if balance_factor == 2:
-                if node.left.balance_factor == -1:
-                    self._left_rotate(node.left)
-                self._right_rotate(node)
-            elif balance_factor == -2:
-                if node.right.balance_factor == 1:
-                    self._right_rotate(node.right)
-                self._left_rotate(node)
+    def _rotate(self, node: Node):
+        balance_factor = node.balance_factor
+        if balance_factor == 2:
+            if node.left.balance_factor == -1:
+                self._left_rotate(node.left)
+            self._right_rotate(node)
+        elif balance_factor == -2:
+            if node.right.balance_factor == 1:
+                self._right_rotate(node.right)
+            self._left_rotate(node)
 
     def _left_rotate(self, node: Node):
         node.left = Node(node.key, node.value)
@@ -103,7 +97,7 @@ class AVLTree:
                         s = self.find_smallest_value(node.right.right)
                         node.right.value = s
                         self._delete(node.right.right, s)
-        self.rotate([node])
+        self._rotate(node)
 
     def find_smallest_value(self, node: Node) -> int:
         current = node
