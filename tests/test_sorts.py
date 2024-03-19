@@ -1,4 +1,4 @@
-from sorts import bubble_sort, quick_sort
+from sorts import bubble_sort, quick_sort, selection_sort
 
 
 BASE_DATA = [9, 3, 7, 4, 75, 154, 42]
