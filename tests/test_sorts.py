@@ -15,3 +15,9 @@ def test_quick_sort():
     data = BASE_DATA[:]
     quick_sort(data)
     assert data == EXPECTED
+
+
+def test_selection_sort():
+    data = BASE_DATA[:]
+    selection_sort(data)
+    assert data == EXPECTED
